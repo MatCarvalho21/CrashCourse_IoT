@@ -7,6 +7,7 @@ int buttonState = 0;
 int previousButtonState = 1;
 int time = 0;
 int pressureTime = 0;
+int debounceDelay = 25;
 
 // variáveis para controlar os diferentes estados da lanterna
 int ledState = -1;
@@ -30,7 +31,7 @@ void loop() {
   }
 
   // vai medir tempos curtos de pressão, com menos de um segundo, e alterar o estado da lanterna
-  if (pressureTime <= 1000 && previousButtonState == 1 && buttonState == 0){
+  if (pressureTime > debounceDelay && pressureTime <= 1000 && previousButtonState == 1 && buttonState == 0){
     ledState += 1;
 
     if (ledState > 6){
