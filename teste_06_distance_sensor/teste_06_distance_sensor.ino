@@ -1,5 +1,4 @@
-// definindo os pins que vamos trabalhar
-// descobri que usar o const antes previne o que essas variáveis mudem no decorrer do código
+// definindo variáveis globais
 const int trigPin = 7;
 const int echoPin = 8;
 long milimetros;
@@ -13,9 +12,8 @@ long duracao;
 #define millimetersConveter 10
 
 void setup() {
+  // inicializando o sensor e definindo a taxa de bits/seg
   Serial.begin(9600);
-
-  // inicializando os pins
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
 }
@@ -36,5 +34,6 @@ void loop() {
   metros = centimetros * metersConveter;
   milimetros = centimetros * millimetersConveter;
 
+  // linha necessária para exibir a medição no serial plotter
   Serial.println(centimetros);
 }

@@ -1,16 +1,17 @@
-int led_vermelha = 13;
+// definindo as variáveis globais
+const int ledVermelha = 13;
+const int delay_ = 1000;
 
 void setup() {
-  pinMode(led_vermelha, OUTPUT);
-
+  // inicializando o led
+  pinMode(ledVermelha, OUTPUT);
 }
 
-int delay_ = 1000;
-
 void loop() {
-  digitalWrite(led_vermelha, HIGH);
+  // ligando e desligando o led, com um delay entre os estados
+  digitalWrite(ledVermelha, HIGH);
   delay(delay_); 
 
-  digitalWrite(led_vermelha, LOW);
+  digitalWrite(ledVermelha, LOW);
   delay(delay_);
 }

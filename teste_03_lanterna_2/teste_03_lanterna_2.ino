@@ -1,58 +1,53 @@
-// numero das saídas que estão conectados o botão e a LED
-int buttonPin = 10; 
-int ledPin = 13;  
+// definindo as variáveis globais
+const int buttonPin = 10; 
+const int ledPin = 13;  
 
-// variável criada para armazenar o estado do botão e o tempo de pressão
 int buttonState = 0; 
 int previousButtonState = 1;
 int time = 0;
 int pressureTime = 0;
-int debounceDelay = 25;
-int controlTime = 2000;
+const int debounceDelay = 25;
+const int controlTime = 2000;
 
-// variáveis para controlar os diferentes estados da lanterna
 int ledState = -1;
 bool isLedOn = false;
 float ledIntensity = 255;
 int ledMode = -1;
 
 void setup() {
+  // inicializando o led, o botão e definindo a taxa de bits/seg
   Serial.begin(9600);
-  // inicializando o botão e a led
   pinMode(ledPin, OUTPUT);
   pinMode(buttonPin, INPUT);
 }
 
 void loop() {
-  // alterando a variável do botão, para o estado real dele (vai alternar entre 0 e 1)
+  // lendo o estado do botão (0 ou 1)
   buttonState = digitalRead(buttonPin);
 
-  // ->> funcionamento dos diferentes estados da lanterna, com base na variável "ledState"
+  // chama a função definida externamente para alterar o ledState
   updateLedState(buttonState);
   
+  // série de comportamentos da lanterna, todos tendo como parâmentro a variável ledState
   switch(ledState){
-    case 0:
-    Serial.println("100%");
+
+    case 0: // 100%
       analogWrite(ledPin, ledIntensity);
       break;
 
-    case 1:
-    Serial.println("75%");
+    case 1: // 75%
       analogWrite(ledPin, ledIntensity*0.75);
       break;
 
-    case 2:
-    Serial.println("50%");
+    case 2: // 50%
       analogWrite(ledPin, ledIntensity*0.5);
       break;
 
-    case 3:
-    Serial.println("25%");
+    case 3: // 25%
       analogWrite(ledPin, ledIntensity*0.25);
       break;
 
-    case 4:
-    Serial.println("Piscando");
+    case 4: // PISCANDO
       if (isLedOn){
         analogWrite(ledPin, ledIntensity*0);
         isLedOn = false;
@@ -62,8 +57,7 @@ void loop() {
       }
       break;
 
-    case 5:
-    Serial.println("Ocilando");
+    case 5: // OSCILANDO
       analogWrite(ledPin, ledIntensity);
       ledIntensity += ledMode;
       if (ledIntensity == 0){
@@ -74,14 +68,12 @@ void loop() {
       } 
       break;
 
-    default:
-    Serial.println("Desligada");
+    default: // DESLIGADA
       analogWrite(ledPin, ledIntensity*0);
       ledIntensity = 255;
       break;
   }
 
-  // atualizando a variávle de controle
   previousButtonState = buttonState;
 }
 
@@ -105,7 +97,6 @@ void updateLedState(int buttonState){
     } else{
       isLedOn = true;
     }
-    
   }
 
   // a atualização constante da variável time é importante para que, quando o botão não esteja pressionado, a variável "pressureTime" permaneça pequena
